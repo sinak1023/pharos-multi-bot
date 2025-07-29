@@ -91,6 +91,7 @@ node index.js
 
 
 pharos-testnet-bot/
+
 ├── index.js           # Main bot script
 ├── wallets.txt        # Private keys (create this)
 ├── wallet.txt         # Target addresses (create this)
@@ -104,7 +105,7 @@ pharos-testnet-bot/
 ### Referral Code
 The bot includes a referral code system. To change the referral code, modify the `REF_CODE` constant in index.js:
 javascript
-const REF_CODE = "yoHvlg6UmrQWQTpw"; // Change to your ref code
+const REF_CODE = `yoHvlg6UmrQWQTpw`
 
 ### Custom RPC
 To use a different RPC endpoint, modify the `PHAROS_RPC` constant:
