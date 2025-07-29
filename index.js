@@ -184,10 +184,11 @@ function getEthersProvider(proxyUrl = null) {
     }
   }
 
-  return new ethers.JsonRpcProvider(PHAROS_RPC, {
-    chainId: 688688,
-    name: "Pharos Testnet"
-  }, { fetchOptions });
+  return new ethers.JsonRpcProvider(PHAROS_RPC, 688688, {
+    fetchRequest: (url, options) => {
+      return fetch(url, { ...options, ...fetchOptions });
+    }
+  });
 }
 
 // Initialize nonces for an address
@@ -664,19 +665,19 @@ async function performSwaps() {
         const deadline = Math.floor(Date.now() / 1000) + 300;
         
         // Encode swap data exactly like Python
-        const encodedData = ethers.AbiCoder.defaultAbiCoder().encode(
+        const abiCoder = new ethers.AbiCoder();
+        const encodedData = abiCoder.encode(
           ["address", "address", "uint256", "address", "uint256", "uint256", "uint256"],
           [
-            swap.from,           // tokenIn
-            swap.to,             // tokenOut
-            500,                 // fee (0.05%)
-            wallet.address,      // recipient
-            amount,              // amountIn
-            0,                   // amountOutMinimum
-            0                    // reserved/deadline in Python code
+            swap.from,
+            swap.to,
+            500,
+            wallet.address,
+            amount,
+            0,
+            0
           ]
         );
-        
         // Create multicall data
         const multicallData = ["0x04e45aaf" + encodedData.slice(2)];
         
