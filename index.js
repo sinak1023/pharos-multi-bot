@@ -175,31 +175,12 @@ function getWeb3Provider(proxyUrl = null) {
 }
 
 function getEthersProvider(proxyUrl = null) {
-  let fetchRequest = undefined;
-  
   if (proxyUrl) {
-    const agent = createProxyAgent(proxyUrl);
-    if (agent) {
-      // برای ethers 6.15.0 باید از FetchRequest استفاده کنیم
-      const https = require('https');
-      const http = require('http');
-      
-      fetchRequest = async (url, options) => {
-        const response = await fetch(url, {
-          ...options,
-          agent: url.startsWith('https') ? agent : agent
-        });
-        return response;
-      };
-    }
+    console.log(chalk.yellow("⚠️ Note: Proxy support in ethers v6 is limited"));
   }
-
-  return new ethers.JsonRpcProvider(
-    PHAROS_RPC,
-    688688,
-    fetchRequest ? { fetchRequest } : undefined
-  );
+  return new ethers.JsonRpcProvider(PHAROS_RPC, 688688);
 }
+
 
 
 // Initialize nonces for an address
